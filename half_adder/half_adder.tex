@@ -1,0 +1,52 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Half Adder}}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+    \section*{Circuit}
+    \bigskip
+    \begin{circuitikz}[american]
+        \draw (0,1.28) node[left]{$A$} -- (1,1.28) node[circ] (AT) {};
+        \draw (0,-2.28) node[left]{$B$} -- (2,-2.28) node[circ] (BT) {};
+
+        \node[american xor port] (X1) at (5,1) {};
+        \draw (AT) |- (X1.in 1);
+        \draw (BT) |- (X1.in 2);
+        \draw (X1.out) -- (7,1) node[right]{$S = A \oplus B$};
+
+        \node[american and port] (A1) at (5,-2) {};
+        \draw (AT) |- (A1.in 1);
+        \draw (BT) |- (A1.in 2);
+        \draw (A1.out) -- (7,-2) node[right]{$C = A \cdot B$};
+    \end{circuitikz}
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+    \section*{Truth Table}
+    \bigskip
+    \scalebox{1.5}{
+        \renewcommand{\arraystretch}{1.3} 
+        \setlength{\tabcolsep}{10pt}
+        \begin{tabular}{c c|c c}
+            \textbf{A} & \textbf{B} & \textbf{S} & \textbf{C} \\ \hline
+            0 & 0 & 0 & 0 \\
+            0 & 1 & 1 & 0 \\
+            1 & 0 & 1 & 0 \\
+            1 & 1 & 0 & 1 \\
+        \end{tabular}
+    }
+\end{center}
+
+\end{document}
