@@ -1,0 +1,72 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Full Adder}}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+    \section*{Circuit}
+    \bigskip
+    \begin{circuitikz}[american]
+        \draw (0,1.28) node[left]{$A$} -- (1,1.28) node[circ] (A) {};
+        \draw (0,-1) node[left]{$B$} -- (1.5,-1) node[circ] (B) {};
+        \draw (0,-3.28) node[left]{$Cin$} -- (2,-3.28) node[circ] (Cin) {};
+
+        \node[american xor port] (X1) at (4,1) {};
+        \draw (A) |- (X1.in 1);
+        \draw (B) |- (X1.in 2);
+
+        \node[american xor port] (X2) at (10,0) {};
+	\draw (X1.out) -- ++(0.5,0) |- (X2.in 1);	
+	\draw (Cin) |- (X2.in 2);
+        \draw (X2.out) -- ++(1,0) node[right]{$S = A \oplus B \oplus Cin$};
+
+        \node[american and port] (A1) at (4,-2.5) {};
+        \draw (A) |- (A1.in 1);
+        \draw (B) |- (A1.in 2);
+
+        \node[american and port] (A2) at (7,-3) {};
+	\draw (Cin) |- (A2.in 2);
+
+	\coordinate (X1branch) at ($(X1.out) + (0.25,0)$);
+	\draw (X1.out) -- (X1branch) node[circ] (X1out) {};
+	\draw (X1out) |- (A2.in 1);
+
+        \node[american or port] (O1) at (10,-2) {};
+        \draw (A1.out) |- (O1.in 1);
+        \draw (A2.out) |- (O1.in 2);
+        \draw (O1.out) -- ++(1,0) node[right]{$Cout = (A \cdot B) + (Cin \cdot (A \oplus B))$};
+    \end{circuitikz}
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+    \section*{Truth Table}
+    \bigskip
+    \scalebox{1.3}{
+        \renewcommand{\arraystretch}{1.3} 
+        \setlength{\tabcolsep}{10pt}
+        \begin{tabular}{c c c|c c}
+            \textbf{A} & \textbf{B} & \textbf{Cin} & \textbf{S} & \textbf{Cout} \\ \hline
+            0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 1 & 0 \\
+            0 & 1 & 0 & 1 & 0 \\
+            0 & 1 & 1 & 0 & 1 \\
+            1 & 0 & 0 & 1 & 0 \\
+            1 & 0 & 1 & 0 & 1 \\
+            1 & 1 & 0 & 0 & 1 \\
+            1 & 1 & 1 & 1 & 1 \\
+        \end{tabular}
+    }
+\end{center}
+
+\end{document}
