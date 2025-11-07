@@ -1,0 +1,65 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{graphicx}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{1-Bit Comparator}}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+    \section*{Circuit}
+    \bigskip
+    \begin{circuitikz}[american]
+        \draw (0,3.28) node[left]{$A$} -- (1,3.28) node[circ](A){};
+        \draw (0,-3.28) node[left]{$B$} -- (1,-3.28) node[circ](B){};
+
+        \node[american not port] (NA) at (3.5,3.28) {};
+        \node[american not port] (NB) at (3.5,-3.28) {};
+        \draw (A) -- (NA.in);
+        \draw (B) -- (NB.in);
+
+        \draw (2.5,3.28) node[circ](Abranch){};
+        \draw (2.5,-3.28) node[circ](Bbranch){};
+
+        \node[american and port] (AGB) at (8,2) {};
+        \draw (A) |- (AGB.in 1);
+        \draw (NB.out) -- ++(1,0) |- (AGB.in 2);
+        \draw (AGB.out) -- ++(1,0) node[right]{$A>B = A \cdot {B}$};
+
+        \node[american and port] (ALB) at (8,0) {};
+        \draw (NA.out) -- ++(0.5,0) |- (ALB.in 1);
+        \draw (B) |- (ALB.in 2);
+        \draw (ALB.out) -- ++(1,0) node[right]{$A<B = {A} \cdot B$};
+
+        \node[american xnor port] (EQ) at (8,-2) {};
+        \draw (A) -- ++(1.5,0) |- (EQ.in 1);
+        \draw (B) -- ++(1.5,0) |- (EQ.in 2);
+        \draw (EQ.out) -- ++(1,0) node[right]{$A=B = (A \oplus B)'$};
+    \end{circuitikz}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+    \section*{Truth Table}
+    \bigskip
+    \scalebox{1.3}{
+        \renewcommand{\arraystretch}{1.3} 
+        \setlength{\tabcolsep}{10pt}
+        \begin{tabular}{c c|c c c}
+            \textbf{A} & \textbf{B} & \textbf{A $>$ B} & \textbf{A = B} & \textbf{A $<$ B} \\ \hline
+            0 & 0 & 0 & 1 & 0 \\
+            0 & 1 & 0 & 0 & 1 \\
+            1 & 0 & 1 & 0 & 0 \\
+            1 & 1 & 0 & 1 & 0 \\
+        \end{tabular}
+    }
+\end{center}
+
+\end{document}
